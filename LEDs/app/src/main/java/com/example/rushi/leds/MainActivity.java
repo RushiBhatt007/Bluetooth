@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
                     msg("Please Turn Bluetooth On");
             }
         });
-
     }
 
     private void bluetoothButtonClick()

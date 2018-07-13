@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class ReceiveData extends AppCompatActivity {
 
     private Button btnOn, btnDis, btnClr;
     private TextView textView,displayView;
+    private EditText sendData;
     private ProgressDialog progress;
     private BluetoothAdapter myBluetooth = null;
     private BluetoothSocket btSocket = null;
@@ -53,6 +55,7 @@ public class ReceiveData extends AppCompatActivity {
         btnClr = (Button)findViewById(R.id.clearData);
         textView = (TextView)findViewById(R.id.textView2);
         displayView = (TextView)findViewById(R.id.displayView);
+        sendData = (EditText)findViewById(R.id.dataSend);
 
         new ConnectBT().execute();//Call the class to connect
 
@@ -62,7 +65,7 @@ public class ReceiveData extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                receiveData();
+                sendData();
             }
         });
 
@@ -83,6 +86,8 @@ public class ReceiveData extends AppCompatActivity {
             }
         });
 
+        while(btSocket != null)
+            receiveData();
     }
 
     private void Disconnect()
@@ -144,7 +149,7 @@ public class ReceiveData extends AppCompatActivity {
                             @Override
                             public void run()
                             {
-                                displayView.setText(string);
+                                displayView.append(string);
                             }
                         });
 
@@ -163,11 +168,18 @@ public class ReceiveData extends AppCompatActivity {
 
     private void sendData()
     {
+        String send = sendData.toString();
         if (btSocket!=null)
         {
             try
             {
-                btSocket.getOutputStream().write('a');
+                if(send=="")
+                    msg("No data found");
+                else
+                    for(int i = 0 ; i < send.length() ; i++ )
+                        btSocket.getOutputStream().write(send.charAt(i));
+                
+                displayView.append(send.trim() + "\n" );
             }
             catch (IOException e)
             {
