@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Bluetooth Data Collector</string>
+    <string name="second_screen_name">Fetch Data</string>
+    <string name="null_data">----------------</string>
+</resources>
