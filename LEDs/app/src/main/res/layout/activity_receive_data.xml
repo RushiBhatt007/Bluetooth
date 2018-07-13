@@ -21,92 +21,23 @@
         android:id="@+id/button4"
         android:layout_weight="1"/>
 
-    <!--<ScrollView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_margin="20dp"-->
-        <!--android:background="@android:color/black"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_weight="88">-->
-
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:id="@+id/displayView"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:layout_gravity="center_horizontal" />-->
-
-    <!--</ScrollView>-->
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
-        android:layout_weight="88"
-        android:orientation="horizontal">
+        android:background="@android:color/black"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="88">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:layout_margin="10dp"
-            android:text="Unique Id:"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_margin="10dp"
-                android:text="Weight:"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_margin="10dp"
-                android:text="Height:"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:id="@+id/uid"
-                android:text="@string/null_data"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:id="@+id/weight"
-                android:text="@string/null_data"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:id="@+id/distance"
-                android:text="@string/null_data"/>
-        </LinearLayout>
+            android:id="@+id/displayView"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"/>
+    </ScrollView>
 
 
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

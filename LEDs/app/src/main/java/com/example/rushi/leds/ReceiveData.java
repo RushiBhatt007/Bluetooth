@@ -11,7 +11,6 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +22,7 @@ import java.util.UUID;
 public class ReceiveData extends AppCompatActivity {
 
     private Button btnOn, btnDis, btnClr;
-    private ListView dataList;
-    private TextView textView,uid,weight,distance;
+    private TextView textView,displayView;
     private ProgressDialog progress;
     private BluetoothAdapter myBluetooth = null;
     private BluetoothSocket btSocket = null;
@@ -37,7 +35,6 @@ public class ReceiveData extends AppCompatActivity {
     private InputStream inputStream;
     private byte buffer[];
     private boolean stopThread;
-    private int countVar = -1;
 
 
     @Override
@@ -55,9 +52,7 @@ public class ReceiveData extends AppCompatActivity {
         btnDis = (Button)findViewById(R.id.button4);
         btnClr = (Button)findViewById(R.id.clearData);
         textView = (TextView)findViewById(R.id.textView2);
-        uid = (TextView)findViewById(R.id.uid);
-        weight = (TextView)findViewById(R.id.weight);
-        distance = (TextView)findViewById(R.id.distance);
+        displayView = (TextView)findViewById(R.id.displayView);
 
         new ConnectBT().execute();//Call the class to connect
 
@@ -75,9 +70,7 @@ public class ReceiveData extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                uid.setText(R.string.null_data);
-                weight.setText(R.string.null_data);
-                distance.setText(R.string.null_data);
+                displayView.setText("");
             }
         });
 
@@ -145,18 +138,16 @@ public class ReceiveData extends AppCompatActivity {
                         SystemClock.sleep(200);
                         byteCount = inputStream.read(rawBytes);
                         final String string = new String(rawBytes,0,byteCount);
-                        final DataClass data = DataClass.getClass(string);
-                        if(data != null) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    uid.setText(data.getUid());
-                                    weight.setText(data.getWeight());
-                                    distance.setText(data.getDistance());
 
-                                }
-                            });
-                        }
+                        runOnUiThread(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                displayView.setText(string);
+                            }
+                        });
+
                         stopThread = true;
                         inputStream = null;
                     }
