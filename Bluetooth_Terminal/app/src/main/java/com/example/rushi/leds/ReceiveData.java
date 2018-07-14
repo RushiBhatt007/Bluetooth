@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class ReceiveData extends AppCompatActivity {
 
-    private Button btnOn, btnDis, btnClr;
+    private Button btnOn, btnDis, btnClr,btnFtch;
     private TextView textView,displayView;
     private EditText sendData;
     private ProgressDialog progress;
@@ -53,11 +53,13 @@ public class ReceiveData extends AppCompatActivity {
         btnOn = (Button)findViewById(R.id.button2);
         btnDis = (Button)findViewById(R.id.button4);
         btnClr = (Button)findViewById(R.id.clearData);
+        btnFtch = (Button)findViewById(R.id.fetch);
         textView = (TextView)findViewById(R.id.textView2);
         displayView = (TextView)findViewById(R.id.displayView);
         sendData = (EditText)findViewById(R.id.dataSend);
 
         new ConnectBT().execute();//Call the class to connect
+
 
         //commands to be sent to bluetooth
         btnOn.setOnClickListener(new View.OnClickListener()
@@ -66,6 +68,13 @@ public class ReceiveData extends AppCompatActivity {
             public void onClick(View v)
             {
                 sendData();
+            }
+        });
+
+        btnFtch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                receiveData();
             }
         });
 
@@ -85,9 +94,6 @@ public class ReceiveData extends AppCompatActivity {
                 Disconnect();//close connection
             }
         });
-
-        while(btSocket != null)
-            receiveData();
     }
 
     private void Disconnect()
@@ -113,10 +119,10 @@ public class ReceiveData extends AppCompatActivity {
         {
                 try
                 {
-                    sendData();
-                    while(inputStream == null) {
+                    do {
                         inputStream = btSocket.getInputStream();
-                    }
+                        SystemClock.sleep(1000);
+                    }while (inputStream==null);
                     beginListenForData();
                 }
                 catch (IOException e)
@@ -126,7 +132,7 @@ public class ReceiveData extends AppCompatActivity {
         }
     }
 
-    void beginListenForData()
+    private void beginListenForData()
     {
         stopThread = false;
         buffer = new byte[1024];
@@ -140,7 +146,6 @@ public class ReceiveData extends AppCompatActivity {
                 {
                     try
                     {
-                        SystemClock.sleep(200);
                         byteCount = inputStream.read(rawBytes);
                         final String string = new String(rawBytes,0,byteCount);
 
@@ -149,7 +154,7 @@ public class ReceiveData extends AppCompatActivity {
                             @Override
                             public void run()
                             {
-                                displayView.append(string);
+                                displayView.append(string+"\n");
                             }
                         });
 
@@ -168,23 +173,30 @@ public class ReceiveData extends AppCompatActivity {
 
     private void sendData()
     {
-        String send = sendData.toString();
+        String send = sendData.getText().toString();
+        String prefix = "-> ";
         if (btSocket!=null)
         {
             try
             {
                 if(send=="")
                     msg("No data found");
-                else
-                    for(int i = 0 ; i < send.length() ; i++ )
+                else {
+                    for (int i = 0; i < send.length(); i++)
                         btSocket.getOutputStream().write(send.charAt(i));
-                
-                displayView.append(send.trim() + "\n" );
+
+                btSocket.getOutputStream().write('\n');
+                }
+
+                displayView.append(prefix+send.trim());
             }
             catch (IOException e)
             {
-                msg("Error in receiving data");
+                msg("Error in sending data");
             }
+            sendData.setText("");
+            displayView.append("\n");
+            receiveData();
         }
     }
 
@@ -193,7 +205,6 @@ public class ReceiveData extends AppCompatActivity {
     {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
     }
-
 
     private class ConnectBT extends AsyncTask<Void, Void, Void>// UI thread
     {

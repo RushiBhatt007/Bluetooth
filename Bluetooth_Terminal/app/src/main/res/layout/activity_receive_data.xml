@@ -27,7 +27,7 @@
         android:layout_margin="20dp"
         android:background="@android:color/black"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="90">
+        android:layout_weight="80">
 
         <TextView
             android:layout_width="match_parent"
@@ -69,6 +69,12 @@
             android:layout_height="wrap_content"
             android:text="SEND DATA"
             android:id="@+id/button2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FETCH DATA"
+            android:id="@+id/fetch" />
 
         <Button
             android:layout_width="wrap_content"
