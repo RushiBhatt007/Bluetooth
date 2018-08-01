@@ -23,7 +23,7 @@ import java.util.UUID;
 public class ReceiveData extends AppCompatActivity {
 
     private Button btnOn, btnDis, btnClr,btnFtch;
-    private TextView textView,displayView;
+    private TextView textView,sentView,receivedView;
     private EditText sendData;
     private ProgressDialog progress;
     private BluetoothAdapter myBluetooth = null;
@@ -55,7 +55,8 @@ public class ReceiveData extends AppCompatActivity {
         btnClr = (Button)findViewById(R.id.clearData);
         btnFtch = (Button)findViewById(R.id.fetch);
         textView = (TextView)findViewById(R.id.textView2);
-        displayView = (TextView)findViewById(R.id.displayView);
+        sentView = (TextView)findViewById(R.id.sentView);
+        receivedView = (TextView)findViewById(R.id.receivedView);
         sendData = (EditText)findViewById(R.id.dataSend);
 
         new ConnectBT().execute();//Call the class to connect
@@ -82,7 +83,8 @@ public class ReceiveData extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                displayView.setText("");
+                sentView.setText("");
+                receivedView.setText("");
             }
         });
 
@@ -154,7 +156,7 @@ public class ReceiveData extends AppCompatActivity {
                             @Override
                             public void run()
                             {
-                                displayView.append(string+"\n");
+                                receivedView.append(string+"\n");
                             }
                         });
 
@@ -188,14 +190,14 @@ public class ReceiveData extends AppCompatActivity {
                 btSocket.getOutputStream().write('\n');
                 }
 
-                displayView.append(prefix+send.trim());
+                sentView.append(prefix+send.trim());
             }
             catch (IOException e)
             {
                 msg("Error in sending data");
             }
             sendData.setText("");
-            displayView.append("\n");
+            sentView.append("\n");
             receiveData();
         }
     }
